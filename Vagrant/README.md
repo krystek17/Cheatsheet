@@ -1,4 +1,4 @@
-#Vagrantfile
+# Vagrantfile
 
 Every Vagrant file should start with
 ```ruby
