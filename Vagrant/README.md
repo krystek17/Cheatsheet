@@ -36,6 +36,20 @@ config.ssh.forward_agent -- if true, agent forwarding over SSH connection is ena
   auto_config: false -- to disable Vagrant's auto-configure feature
 
 ```
+## Defining Multi Machines
+```ruby
+Vagrant.configure("2") do |config|
+  config.vm.provision "shell", inline: "echo Hello"
+
+  config.vm.define "yin" do |yin|
+    yin.vm.box = "generic/ubuntu2004"
+  end
+
+  config.vm.define "yang" do |yang|
+    yang.vm.box = "generic/ubuntu2004"
+  end
+end
+```
 ## Ansible
 ```ruby
 config.vm.provision "ansible" do |ansible|
@@ -48,19 +62,23 @@ config.vm.provision "ansible" do |ansible|
       "group-1" => ["node-[1:2]"],
       "group-2" => ["node-3"],
     }
-
 ```
-## Defining Multi Machines
-```ruby
-Vagrant.configure("2") do |config|
-  config.vm.provision "shell", inline: "echo Hello"
-
-  config.vm.define "yin" do |yin|
-    yin.vm.box = "generic/ubuntu2004"
-  end
-
-  config.vm.define "yang" do |yang|
-    yang.vm.box = "generic/ubuntu2004"
+Take advantage of ansible parallelism with the following:
+```
+N = 3
+(1..N).each do |machine_id|  
+  config.vm.define "machine#{machine_id}" do |machine|
+    machine.vm.hostname = "machine#{machine_id}"
+    machine.vm.network "private_network", ip: "192.168.77.#{20+machine_id}"
+    
+    # Only execute once the Ansible provisioner,
+    # when all the machines are up and ready.
+    if machine_id == N
+      machine.vm.provision :ansible do |ansible|
+        ansible.limit = "all"
+        ansible.playbook = "playbook.yml"      
+      end    
+    end  
   end
 end
 ```
