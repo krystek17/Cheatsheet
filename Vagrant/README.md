@@ -18,7 +18,7 @@ config.vm.provision -- what we want setup (shell, ansible)
 config.vm.provider "libvirt" do |v|
   v.memory = "512"
   v.memory = "1"
-  end
+ end
 ```
 ```ruby
 config.vm.provision "shell", path "script.sh" -- specify a path to a shell script on theh host machine.
