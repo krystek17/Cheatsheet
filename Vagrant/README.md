@@ -64,7 +64,7 @@ config.vm.provision "ansible" do |ansible|
     }
 ```
 Take advantage of ansible parallelism with the following:
-```
+```ruby
 N = 3
 (1..N).each do |machine_id|  
   config.vm.define "machine#{machine_id}" do |machine|
