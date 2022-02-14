@@ -1,4 +1,8 @@
-# Vagrantfile
+# Vagrant
+## CLI
+```
+
+```
 
 Every Vagrant file should start with
 ```ruby
@@ -6,12 +10,19 @@ Vagrant.configure("2") do |config|
 ```
 ## VM configs
 ```ruby
-config.vm.box -- operating system
-config.vm.define -- name of the machine
-config.vm.hostname -- hostname
-config.vm.network -- How your host sees your box
-config.vm.provider -- libvirt, virtualbox, etc
-config.vm.synced_folder "host_folder" "vm_folder" -- How you access files from your computer
+# OS
+config.vm.box
+# Name of the machine
+config.vm.define
+# hostname
+config.vm.hostname
+# Network management
+config.vm.network
+# Hypervisor
+config.vm.provider -- libvirt, virtualbox, etc.
+# Accessing files from your computer.
+config.vm.synced_folder "host_folder" "vm_folder" 
+# what we want to setup.
 config.vm.provision -- what we want setup (shell, ansible)
 ```
 ```ruby
@@ -21,19 +32,26 @@ config.vm.provider "libvirt" do |v|
  end
 ```
 ```ruby
-config.vm.provision "shell", path "script.sh" -- specify a path to a shell script on theh host machine.
-config.vm.provision "file", source: "file", destination "file" -- upload file or directory form the host machine to the guest machine.
+# Specify a path to a shell script on the host machine.
+config.vm.provision "shell", path "script.sh"
+# upload file or directory form the host machine to the guest machine.
+config.vm.provision "file", source: "file", destination "file" -- 
 ```
 ## SSH configs
 ```ruby
-config.ssh.insert_key -- if set to true, Vagrant will automatically insert a keypair to use ssh, replacing Vagrant's default insecure key.
-config.ssh.forward_agent -- if true, agent forwarding over SSH connection is enabled
+# if set to true, Vagrant will automatically insert a keypair to use ssh, replacing Vagrant's default insecure key.
+config.ssh.insert_key
+# if true, agent forwarding over SSH connection is enabled.
+config.ssh.forward_agent
 ```
 ## Network options
 ```ruby
-"forwarded_port", guest: 80, host: 8080 --  create a forwarded port mapping
-"private_network", ip: "192.168.33.10" -- create a private network, which allows host only access
-  auto_config: false -- to disable Vagrant's auto-configure feature
+# create a forwarded port mapping.
+"forwarded_port", guest: 80, host: 8080
+# create a private network, which allows host only access.
+"private_network", ip: "192.168.33.10"
+  # to disable Vagrant's auto-configure feature.
+  auto_config: false 
 
 ```
 ## Defining Multi Machines
@@ -54,10 +72,15 @@ end
 ```ruby
 config.vm.provision "ansible" do |ansible|
   ansible.limit = "all" -- allow access to all machines by ansible
-  ansible.playbook = "playbook.yml" -- run specific playbook
-  ansible.verbose = "false" -- allow/disable verbosity
-  ansible.compatibility_mode = "2.0" -- remove compatibility warning
+  # Playbook location
+  ansible.playbook = "playbook.yml" -- 
+  # allow/disable verbosity
+  ansible.verbose = "false"
+  # Remove compatibility warning
+  ansible.compatibility_mode = "2.0" 
+  # Inventory location
   ansible.inventory_path = "inventory.ini"
+  # Host groups
   ansible.groups = {
       "group-1" => ["node-[1:2]"],
       "group-2" => ["node-3"],
