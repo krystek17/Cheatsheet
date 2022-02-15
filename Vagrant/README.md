@@ -1,6 +1,6 @@
 # Vagrant
 ## CLI
-### vagrant ...
+### vagrant [options] <command> 
 ```sh
 # This initialises the current directory to be a Vagrant environment by creating a Vagrantfile
 vagrant init <boxe_name>
