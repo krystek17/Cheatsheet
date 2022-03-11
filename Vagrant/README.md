@@ -141,9 +141,10 @@ end
 ### Ansible
 ```ruby
 config.vm.provision "ansible" do |ansible|
-  ansible.limit = "all" -- allow access to all machines by ansible
+  # allow access to all machines by ansible
+  ansible.limit = "all"
   # Playbook location
-  ansible.playbook = "playbook.yml" -- 
+  ansible.playbook = "playbook.yml"
   # Allow/disable verbosity
   ansible.verbose = "false"
   # Remove compatibility warning
